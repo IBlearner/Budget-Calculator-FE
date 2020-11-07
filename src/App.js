@@ -12,7 +12,7 @@ function App() {
         return data
     }
 
-    const PostData = async (x) => {
+    const PostItem = async (x) => {
         x = JSON.stringify(x)
         console.log(x)
         const response = await fetch (`${url}/items`, {
@@ -20,12 +20,23 @@ function App() {
             headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
             body: x
         })
-        if (!response.ok) console.log(`An error has occured: ${response.status} - ${response.statusText}`)
+        if (!response.ok) return console.log(`An error has occured: ${response.status} - ${response.statusText}`)
+    }
+
+    const DeleteItem = async (x) => {
+        x = JSON.stringify(x)
+        console.log(x)
+        const response = await fetch(`${url}/items`, {
+            method: "DELETE",
+            headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+            body: x
+        })
+        if (!response.ok) return console.log(`An error has occured: ${response.status} - ${response.statusText}`)
     }
     
     return (
         <div className="App">
-            <Home GetData={GetData} PostData={PostData}/>
+            <Home GetData={GetData} PostItem={PostItem} DeleteItem={DeleteItem}/>
         </div>
     );
 }

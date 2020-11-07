@@ -21,7 +21,10 @@ class Home extends Component {
         if (x === null) return
         const list = x.map((single, i) => {
             return(
-                <h1>{single.name}: ${single.price}</h1>
+                <div>
+                    <h1>{single.name}: ${single.price}</h1>
+                    <button onClick={() => this.deleteItem(single)}>Delete</button>
+                </div>
             )
         })
         return list
@@ -37,13 +40,18 @@ class Home extends Component {
         )
     }
 
-    addItem = () => {
+    addItem = async () => {
         const name = this.state.name
         const price = this.state.price
         const description = this.state.description
         const newObj = {"name": name, "price": price, "description": description}
-        this.props.PostData(newObj)
-        this.props.GetData()
+        await this.props.PostItem(newObj)
+        this.GetItemData()
+    }
+
+    deleteItem = async (x) => {
+        const newObj = {"item_id": x.item_id}
+        await this.props.DeleteItem(newObj)
         this.GetItemData()
     }
 
@@ -63,7 +71,6 @@ class Home extends Component {
         return (
             <>
                 <h1>Hello! This is the home page</h1>
-                <button onClick={() => this.GetItemData()}>Refresh dammit</button>
                 <input onChange={(e) => {this.handleChange(e)}} name="name" value={this.state.name} placeholder="Enter item name"></input>
                 <input onChange={(e) => {this.handleChange(e)}} name="price" placeholder="Enter the amt you spent"></input>
                 <input onChange={(e) => {this.handleChange(e)}} name="description" placeholder="Enter a description if applicable"></input>
