@@ -5,7 +5,8 @@ class Home extends Component {
         itemData: [],
         name: "",
         price: "",
-        description: ""
+        description: "",
+        date: ""
     }
 
     async componentDidMount() {
@@ -22,7 +23,7 @@ class Home extends Component {
         const list = x.map((single, i) => {
             return(
                 <div>
-                    <h1>{single.name}: ${single.price}</h1>
+                    <h3>{single.date}: ${single.price} on {single.name}</h3>
                     <button onClick={() => this.deleteItem(single)}>Delete</button>
                 </div>
             )
@@ -44,15 +45,31 @@ class Home extends Component {
         const name = this.state.name
         const price = this.state.price
         const description = this.state.description
-        const newObj = {"name": name, "price": price, "description": description}
+        const date = this.formatDate(this.state.date)
+        const newObj = {"name": name, "price": price, "description": description, "date": date}
         await this.props.PostItem(newObj)
         this.GetItemData()
+        this.clearState()
     }
 
     deleteItem = async (x) => {
         const newObj = {"item_id": x.item_id}
         await this.props.DeleteItem(newObj)
         this.GetItemData()
+    }
+
+    clearState = () => {
+        this.setState({
+            name: "",
+            price: "",
+            description: "",
+            date: ""
+        })
+    }
+
+    formatDate = (x) => {
+        var newDate = x.split("-").reverse().join("-")
+        return newDate
     }
 
     handleChange = e => {
@@ -72,8 +89,9 @@ class Home extends Component {
             <>
                 <h1>Hello! This is the home page</h1>
                 <input onChange={(e) => {this.handleChange(e)}} name="name" value={this.state.name} placeholder="Enter item name"></input>
-                <input onChange={(e) => {this.handleChange(e)}} name="price" placeholder="Enter the amt you spent"></input>
-                <input onChange={(e) => {this.handleChange(e)}} name="description" placeholder="Enter a description if applicable"></input>
+                <input onChange={(e) => {this.handleChange(e)}} name="price" value={this.state.price} placeholder="Enter the amt you spent"></input>
+                <input onChange={(e) => {this.handleChange(e)}} name="description" value={this.state.description} placeholder="Enter a description if applicable"></input>
+                <input onChange={(e) => {this.handleChange(e)}} name="date" value={this.state.date} placeholder="Enter date (dd-mm-yy)"></input>
                 <button form="form" type="submit" onClick={this.handleClick}>Add new</button>
                 {this.listForData(this.state.itemData)}
                 {this.accumTotal(this.state.itemData)}
