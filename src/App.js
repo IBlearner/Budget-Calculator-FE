@@ -12,31 +12,16 @@ function App() {
         return data
     }
 
-    const PostData = async () => {
-        var x = "bob"
+    const PostData = async (x) => {
         x = JSON.stringify(x)
-        const response = await fetch (`${url}/items/add`, {
+        console.log(x)
+        const response = await fetch (`${url}/items`, {
             method: "POST",
             headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
             body: x
         })
         if (!response.ok) console.log(`An error has occured: ${response.status} - ${response.statusText}`)
-        console.log(response)
     }
-
-    // (async () => {
-    //     const rawResponse = await fetch('https://httpbin.org/post', {
-    //       method: 'POST',
-    //       headers: {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json'
-    //       },
-    //       body: JSON.stringify({a: 1, b: 'Textual content'})
-    //     });
-    //     const content = await rawResponse.json();
-      
-    //     console.log(content);
-    // })
     
     return (
         <div className="App">
