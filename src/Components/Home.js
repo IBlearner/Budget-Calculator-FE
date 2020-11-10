@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import moment from "moment"
+moment().format()
 
 class Home extends Component {
     state = {
@@ -23,8 +25,9 @@ class Home extends Component {
         const list = x.map((single, i) => {
             return(
                 <div>
-                    <h3>{single.date}: ${single.price} on {single.name}</h3>
+                    <h3>{moment(single.date).format("Do MMM")}: ${single.price} on {single.name}</h3>
                     <button onClick={() => this.deleteItem(single)}>Delete</button>
+                    <button onClick={() => this.props.GoToEditPage()}>Edit</button>
                 </div>
             )
         })

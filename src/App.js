@@ -1,9 +1,12 @@
 import './App.css';
 import Home from "./Components/Home"
+import EditPage from "./Components/EditPage"
+import { useState } from 'react';
 
 const url = "http://localhost:3333"
 
 function App() {
+    const [page, setPage] = useState("home")
 
     const GetData = async () => {
         const response = await fetch(`${url}/items`, {method: "GET"})
@@ -34,9 +37,24 @@ function App() {
         if (!response.ok) return console.log(`An error has occured: ${response.status} - ${response.statusText}`)
     }
     
+    const PageSwitcher = (x) => {
+        switch (x) {
+            case "home":
+                return <Home GetData={GetData} PostItem={PostItem} DeleteItem={DeleteItem} GoToEditPage={GoToEditPage}/>
+            case "edit":
+                return <EditPage></EditPage>
+            default:
+                //in case of error?
+        }
+    }
+
+    const GoToEditPage = () => {
+        setPage("edit")
+    }
+
     return (
         <div className="App">
-            <Home GetData={GetData} PostItem={PostItem} DeleteItem={DeleteItem}/>
+            {PageSwitcher(page)}
         </div>
     );
 }
