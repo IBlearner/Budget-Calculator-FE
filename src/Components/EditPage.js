@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 class EditPage extends Component {
     state = {
+        item_id: "",
         name: "",
         price: "",
         description: "",
@@ -9,8 +10,8 @@ class EditPage extends Component {
     }
 
     componentDidMount() {
-        const props = this.props.editDetails
-        this.setState({name: props.name, price: props.price, description: props.description, date: props.date})
+        const {item_id, name, price, description, date} = this.props.editDetails
+        this.setState({item_id: item_id, name: name, price: price, description: description, date: date})
     }
 
     handleChange = e => {
@@ -20,8 +21,8 @@ class EditPage extends Component {
     }
 
     handleClick = () => {
-        const {name, price, description, date} = this.state
-        const newObj = {name: name, price: price, description: description, date: date}
+        const {item_id, name, price, description, date} = this.state
+        const newObj = {item_id: item_id, name: name, price: price, description: description, date: date}
         this.props.UpdateItem(newObj)
     }
 

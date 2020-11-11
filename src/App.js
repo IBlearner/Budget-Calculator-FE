@@ -39,7 +39,8 @@ function App() {
     }
 
     const UpdateItem = async x => {
-        console.log(x)
+        x = JSON.stringify(x)
+        return console.log(x)
         const response = await fetch(`${url}/items`, {
             method: "PUT",
             headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
