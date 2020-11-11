@@ -27,7 +27,7 @@ class Home extends Component {
                 <div>
                     <h3>{moment(single.date).format("Do MMM")}: ${single.price} on {single.name}</h3>
                     <button onClick={() => this.deleteItem(single)}>Delete</button>
-                    <button onClick={() => this.props.GoToEditPage()}>Edit</button>
+                    <button onClick={() => this.props.GoToEditPage(single)}>Edit</button>
                 </div>
             )
         })
@@ -45,9 +45,7 @@ class Home extends Component {
     }
 
     addItem = async () => {
-        const name = this.state.name
-        const price = this.state.price
-        const description = this.state.description
+        const {name, price, description} = this.state
         const date = this.formatDate(this.state.date)
         const newObj = {"name": name, "price": price, "description": description, "date": date}
         await this.props.PostItem(newObj)

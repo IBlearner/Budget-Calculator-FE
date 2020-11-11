@@ -1,12 +1,13 @@
 import './App.css';
 import Home from "./Components/Home"
 import EditPage from "./Components/EditPage"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const url = "http://localhost:3333"
 
 function App() {
     const [page, setPage] = useState("home")
+    const [editDetails, setEditDetails] = useState()
 
     const GetData = async () => {
         const response = await fetch(`${url}/items`, {method: "GET"})
@@ -36,21 +37,40 @@ function App() {
         })
         if (!response.ok) return console.log(`An error has occured: ${response.status} - ${response.statusText}`)
     }
+
+    const UpdateItem = async x => {
+        console.log(x)
+        const response = await fetch(`${url}/items`, {
+            method: "PUT",
+            headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+            body: x
+        })
+        if (!response.ok) return console.log(`An error has occured: ${response.status} - ${response.statusText}`)
+    }
     
     const PageSwitcher = (x) => {
         switch (x) {
             case "home":
                 return <Home GetData={GetData} PostItem={PostItem} DeleteItem={DeleteItem} GoToEditPage={GoToEditPage}/>
             case "edit":
-                return <EditPage></EditPage>
+                return <EditPage editDetails={editDetails} GoToHomePage={GoToHomePage} UpdateItem={UpdateItem}></EditPage>
             default:
                 //in case of error?
         }
     }
 
-    const GoToEditPage = () => {
+    const GoToEditPage = (x) => {
+        setEditDetails(x)
         setPage("edit")
     }
+
+    const GoToHomePage = () => {
+        setPage("home")
+    }
+
+    // useEffect(() => {
+    //     //do something additional
+    // }, [editDetails])
 
     return (
         <div className="App">
